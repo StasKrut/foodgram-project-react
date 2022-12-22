@@ -5,6 +5,10 @@ from .models import Follow, User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
+    """
+    Панель админа для редактирования пользователей со всеми необходимыми
+    полями, фильтрами и поисками
+    """
     list_display = (
         'role',
         'username',
@@ -20,6 +24,10 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
+    """
+    Панель админа для редактирования подписок на авторов
+    со всеми необходимыми полями, фильтрами и поисками
+    """
     list_display = (
         'user',
         'author',

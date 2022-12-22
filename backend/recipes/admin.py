@@ -13,6 +13,10 @@ class IngredientsInRecipeAdmin(admin.TabularInline):
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
+    """
+    Панель админа для редактирования набора тегов рецептов со всеми 
+    необходимыми полями, фильтрами и поисками
+    """
     list_display = (
         'name',
         'color',
@@ -25,12 +29,19 @@ class TagAdmin(admin.ModelAdmin):
 
 
 class IngredientResource(resources.ModelResource):
+    """
+    Вспомогательная модель для экспорта/импорта ингредиентов
+    """
     class Meta:
         model = Ingredient
 
 
 @admin.register(Ingredient)
 class IngredientAdmin(ImportExportModelAdmin):
+    """
+    Панель админа для редактирования ингредиентов со всеми необходимыми полями,
+    фильтрами, поисками и возможности экспорта/импорта ингредиентов
+    """
     resource_class = IngredientResource
     list_display = ('name', 'measurement_unit',)
     list_display_links = ('name',)
@@ -41,6 +52,10 @@ class IngredientAdmin(ImportExportModelAdmin):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
+    """
+    Панель админа для редактирования рецептов со всеми необходимыми полями,
+    фильтрами и поисками
+    """
     list_display = (
         'name',
         'author',
@@ -61,6 +76,10 @@ class RecipeAdmin(admin.ModelAdmin):
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
+    """
+    Панель админа для редактирования избранного со всеми необходимыми полями,
+    фильтрами и поисками
+    """
     list_display = ('user', 'recipe',)
     search_fields = ('user', 'recipe',)
     list_filter = ('recipe',)
@@ -69,6 +88,10 @@ class FavoriteAdmin(admin.ModelAdmin):
 
 @admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
+    """
+    Панель админа для редактирования списка покупок со всеми необходимыми
+    полями, фильтрами и поисками
+    """
     list_display = ('user', 'recipe',)
     search_fields = ('user', 'recipe',)
     list_filter = ('user', 'recipe',)

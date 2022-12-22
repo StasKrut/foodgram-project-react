@@ -4,6 +4,9 @@ from recipes.models import Recipe
 
 
 class RecipeFilter(filters.FilterSet):
+    """
+    Фильтр для рецептов по тегам, авторам, наличию в избранном и списке покупок
+    """
     tags = filters.AllValuesMultipleFilter(field_name='tags__slug')
     is_favorited = filters.BooleanFilter(method='get_is_favorited')
     is_in_shopping_cart = filters.BooleanFilter(
