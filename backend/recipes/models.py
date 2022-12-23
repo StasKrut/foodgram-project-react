@@ -89,7 +89,7 @@ class Recipe(models.Model):
     cooking_time = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(
             1,
-            'Время приготовления должно быть не менее 1 минуты'
+            message='Время приготовления должно быть не менее 1 минуты!'
         )],
         verbose_name='Время приготовления, мин.'
     )
@@ -121,12 +121,11 @@ class IngredientsInRecipe(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Рецепт'
     )
-    amount = models.IntegerField(
+    amount = models.FloatField(
         default=1,
         validators=[MinValueValidator(
             0.001,
-            f'Ингредиента должно быть не менее'
-            f'0.001 {ingredient.measurement_unit}'
+            message='Ингредиента должно быть не менее 0.001.'
         )],
         verbose_name='Количество ингредиента'
     )

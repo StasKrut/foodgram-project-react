@@ -12,7 +12,6 @@ from recipes.models import (
 from users.models import Follow, User
 
 
-@transaction.atomic
 class UsersSerializer(UserSerializer):
     """
     Сериализатор пользователя с отметкой о подписке
@@ -34,7 +33,6 @@ class UsersSerializer(UserSerializer):
             user=request.user, author=obj).exists()
 
 
-@transaction.atomic
 class TagSerializer(serializers.ModelSerializer):
     """
     Сериализатор тегов
@@ -44,7 +42,6 @@ class TagSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-@transaction.atomic
 class IngridientSerializer(serializers.ModelSerializer):
     """
     Сериализатор ингредиентов
@@ -118,7 +115,6 @@ class GetRecipeSerializer(serializers.ModelSerializer):
             user=request.user, recipe__id=obj.id).exists()
 
 
-@transaction.atomic
 class CreateIngredientsInRecipeSerializer(serializers.ModelSerializer):
     """
     Сериализатор создания и изменения ингредиентов в рецептах
@@ -137,15 +133,16 @@ class CreateIngredientsInRecipeSerializer(serializers.ModelSerializer):
         )
 
     def validate_amount(self, data):
-        if int(data) < 1:
+        if float(data) < 0.001:
             raise ValidationError({
                 'ingredients': (
-                    'Количество должно быть больше или равно 1'
+                    'Ингредиента должно быть не менее 0.001.'
                 ),
                 'msg': data
             })
         return data
 
+    @transaction.atomic
     def create(self, validated_data):
         return IngredientsInRecipe.objects.create(
             ingredient=validated_data.get('id'),
@@ -153,7 +150,6 @@ class CreateIngredientsInRecipeSerializer(serializers.ModelSerializer):
         )
 
 
-@transaction.atomic
 class CreateRecipeSerializer(serializers.ModelSerializer):
     """
     Сериализатор с переопределением создания и изменения рецептов с проверкой
@@ -174,6 +170,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             'name', 'text', 'cooking_time',
         )
 
+    @transaction.atomic
     def create_ingredients(self, recipe, ingredients):
         IngredientsInRecipe.objects.bulk_create([
             IngredientsInRecipe(
@@ -193,12 +190,13 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                     'Есть задублированные ингредиенты!'
                 )
             ingredients_list.append(ingredient_id)
-        if data['cooking_time'] <= 0:
+        if data['cooking_time'] <= 1:
             raise ValidationError(
-                'Время приготовления должно быть больше 0!'
+                'Время приготовления должно быть не менее 1 минуты!'
             )
         return data
 
+    @transaction.atomic
     def create(self, validated_data):
         request = self.context.get('request')
         ingredients = validated_data.pop('ingredients')
@@ -211,6 +209,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         recipe.tags.set(tags)
         return recipe
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('ingredients')
         recipe = instance
@@ -227,7 +226,6 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         ).data
 
 
-@transaction.atomic
 class RecipeShortSerializer(serializers.ModelSerializer):
     """
     Сериализатор короткой карточки рецепта
@@ -237,7 +235,6 @@ class RecipeShortSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'image', 'cooking_time')
 
 
-@transaction.atomic
 class ShoppingCartSerializer(serializers.ModelSerializer):
     """
     Сериализатор списка покупок с проверкой на уникальность
@@ -259,7 +256,6 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
         return RecipeShortSerializer(instance.recipe, context=context).data
 
 
-@transaction.atomic
 class FavoriteSerializer(serializers.ModelSerializer):
     """
     Сериализатор избранного с проверкой на уникальность
@@ -321,7 +317,6 @@ class FollowersSerializer(serializers.ModelSerializer):
         ).exists()
 
 
-@transaction.atomic
 class FollowSerializer(serializers.ModelSerializer):
     """
     Сериализатор подписки на авторов
