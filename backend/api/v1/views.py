@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from api.filters import RecipeFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
@@ -25,6 +24,7 @@ from .serializers import (
     FavoriteSerializer, FollowersSerializer, FollowSerializer
 )
 from .pagination import RecipePagination
+from .utils import download_shopping_cart
 
 
 class TagViewSet(ModelViewSet):
@@ -92,7 +92,7 @@ class UsersViewSet(UserViewSet):
 
 class RecipeViewSet(ModelViewSet):
     """
-    Вьюсет для рецептов с добавлением/удалением из 
+    Вьюсет для рецептов с добавлением/удалением из
     избранного/списка покупок, выгрузкой списка покупок
     """
     queryset = Recipe.objects.all()
@@ -140,32 +140,7 @@ class RecipeViewSet(ModelViewSet):
         detail=False, methods=['get'], permission_classes=(IsAuthenticated,)
     )
     def download_shopping_cart(self, request):
-        shopping_cart = ShoppingCart.objects.filter(user=request.user).all()
-        shopping_list = {}
-        for item in shopping_cart:
-            for ingridients in item.recipe.ingridients_in_recipe.all():
-                name = ingridients.ingredient.name
-                measuring_unit = ingridients.ingredient.measurement_unit
-                amount = ingridients.amount
-                if name not in shopping_list:
-                    shopping_list[name] = {
-                        'name': name,
-                        'measurement_unit': measuring_unit,
-                        'amount': amount
-                    }
-                else:
-                    shopping_list[name]['amount'] += amount
-        content = (
-            [f'{item["name"]} ({item["measurement_unit"]}) '
-             f'- {item["amount"]}\n'
-             for item in shopping_list.values()]
-        )
-        filename = 'shopping_list.pdf'
-        response = HttpResponse(content, content_type='text/plain')
-        response['Content-Disposition'] = (
-            'attachment; filename={0}'.format(filename)
-        )
-        return response
+        return download_shopping_cart(request)
 
     @action(detail=True, methods=['post'])
     def favorite(self, request, pk):

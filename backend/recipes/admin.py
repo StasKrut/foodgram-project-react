@@ -14,7 +14,7 @@ class IngredientsInRecipeAdmin(admin.TabularInline):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     """
-    Панель админа для редактирования набора тегов рецептов со всеми 
+    Панель админа для редактирования набора тегов рецептов со всеми
     необходимыми полями, фильтрами и поисками
     """
     list_display = (

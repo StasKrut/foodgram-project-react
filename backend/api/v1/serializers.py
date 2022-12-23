@@ -4,6 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueTogetherValidator
 from drf_extra_fields.fields import Base64ImageField
 from djoser.serializers import UserSerializer
+from django.db import transaction
 
 from recipes.models import (
     ShoppingCart, Favorite, Ingredient, IngredientsInRecipe, Recipe, Tag
@@ -11,6 +12,7 @@ from recipes.models import (
 from users.models import Follow, User
 
 
+@transaction.atomic
 class UsersSerializer(UserSerializer):
     """
     Сериализатор пользователя с отметкой о подписке
@@ -32,6 +34,7 @@ class UsersSerializer(UserSerializer):
             user=request.user, author=obj).exists()
 
 
+@transaction.atomic
 class TagSerializer(serializers.ModelSerializer):
     """
     Сериализатор тегов
@@ -41,6 +44,7 @@ class TagSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+@transaction.atomic
 class IngridientSerializer(serializers.ModelSerializer):
     """
     Сериализатор ингредиентов
@@ -114,6 +118,7 @@ class GetRecipeSerializer(serializers.ModelSerializer):
             user=request.user, recipe__id=obj.id).exists()
 
 
+@transaction.atomic
 class CreateIngredientsInRecipeSerializer(serializers.ModelSerializer):
     """
     Сериализатор создания и изменения ингредиентов в рецептах
@@ -148,6 +153,7 @@ class CreateIngredientsInRecipeSerializer(serializers.ModelSerializer):
         )
 
 
+@transaction.atomic
 class CreateRecipeSerializer(serializers.ModelSerializer):
     """
     Сериализатор с переопределением создания и изменения рецептов с проверкой
@@ -221,6 +227,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         ).data
 
 
+@transaction.atomic
 class RecipeShortSerializer(serializers.ModelSerializer):
     """
     Сериализатор короткой карточки рецепта
@@ -230,6 +237,7 @@ class RecipeShortSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'image', 'cooking_time')
 
 
+@transaction.atomic
 class ShoppingCartSerializer(serializers.ModelSerializer):
     """
     Сериализатор списка покупок с проверкой на уникальность
@@ -251,6 +259,7 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
         return RecipeShortSerializer(instance.recipe, context=context).data
 
 
+@transaction.atomic
 class FavoriteSerializer(serializers.ModelSerializer):
     """
     Сериализатор избранного с проверкой на уникальность
@@ -312,6 +321,7 @@ class FollowersSerializer(serializers.ModelSerializer):
         ).exists()
 
 
+@transaction.atomic
 class FollowSerializer(serializers.ModelSerializer):
     """
     Сериализатор подписки на авторов
