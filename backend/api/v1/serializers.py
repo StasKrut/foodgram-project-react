@@ -80,6 +80,7 @@ class GetRecipeSerializer(serializers.ModelSerializer):
     Сериализатор получения рецептов, дополненный полями
     наличия в списке покупок и избранном
     """
+    image = Base64ImageField(use_url=True, max_length=None)
     tags = TagSerializer(many=True, read_only=True)
     ingredients = GetIngredientsInRecipeSerializer(
         many=True,
