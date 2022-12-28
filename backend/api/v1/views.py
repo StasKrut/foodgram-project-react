@@ -1,29 +1,23 @@
 from api.filters import RecipeFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from djoser.views import UserViewSet
+from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import (
-    IsAuthenticated, SAFE_METHODS, IsAuthenticatedOrReadOnly
-)
+from rest_framework.permissions import (SAFE_METHODS, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
-from djoser.views import UserViewSet
 from rest_framework.viewsets import ModelViewSet
-from recipes.models import (
-    Tag, Ingredient, Recipe, Favorite, ShoppingCart
-)
-from users.models import User, Follow
+from users.models import Follow, User
 
-from .permissions import IsAdminOrAuthorOrReadOnlyPermission
-from .serializers import (
-    TagSerializer, IngridientSerializer,
-    GetRecipeSerializer,
-    CreateRecipeSerializer,
-    ShoppingCartSerializer,
-    FavoriteSerializer, FollowersSerializer, FollowSerializer
-)
 from .pagination import RecipePagination
+from .permissions import IsAdminOrAuthorOrReadOnlyPermission
+from .serializers import (CreateRecipeSerializer, FavoriteSerializer,
+                          FollowersSerializer, FollowSerializer,
+                          GetRecipeSerializer, IngridientSerializer,
+                          ShoppingCartSerializer, TagSerializer)
 from .utils import download_shopping_cart
 
 

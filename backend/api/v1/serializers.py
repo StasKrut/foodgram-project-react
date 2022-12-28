@@ -1,14 +1,12 @@
-from rest_framework import serializers
-from rest_framework.generics import get_object_or_404
-from rest_framework.exceptions import ValidationError
-from rest_framework.validators import UniqueTogetherValidator
-from drf_extra_fields.fields import Base64ImageField
-from djoser.serializers import UserSerializer
 from django.db import transaction
-
-from recipes.models import (
-    ShoppingCart, Favorite, Ingredient, IngredientsInRecipe, Recipe, Tag
-)
+from djoser.serializers import UserSerializer
+from drf_extra_fields.fields import Base64ImageField
+from recipes.models import (Favorite, Ingredient, IngredientsInRecipe, Recipe,
+                            ShoppingCart, Tag)
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from rest_framework.generics import get_object_or_404
+from rest_framework.validators import UniqueTogetherValidator
 from users.models import Follow, User
 
 
