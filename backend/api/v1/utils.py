@@ -19,7 +19,7 @@ def download_shopping_cart(request):
             else:
                 shopping_list[name]['amount'] += amount
     content = (
-        'Список покупок:\n',
+        ['Список покупок:\n'],
         [f'{item["name"]} ({item["measurement_unit"]}) '
          f'- {item["amount"]}\n'
          for item in shopping_list.values()]
