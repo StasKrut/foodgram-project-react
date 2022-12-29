@@ -189,7 +189,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                     'Есть задублированные ингредиенты!'
                 )
             ingredients_list.append(ingredient_id)
-        if data['cooking_time'] <= 1:
+        if data['cooking_time'] < 1:
             raise ValidationError(
                 'Время приготовления должно быть не менее 1 минуты!'
             )
