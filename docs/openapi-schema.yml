@@ -3,7 +3,7 @@ info:
   title: 'Foodgram'
   version: ''
 paths:
-  /api/users/:
+  /api/v1/users/:
     get:
       operationId: Список пользователей
       description: ''
@@ -35,13 +35,13 @@ paths:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://foodgram.example.org/api/users/?page=4
+                    example: http://foodgram.example.org/api/v1/users/?page=4
                     description: 'Ссылка на следующую страницу'
                   previous:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://foodgram.example.org/api/users/?page=2
+                    example: http://foodgram.example.org/api/v1/users/?page=2
                     description: 'Ссылка на предыдущую страницу'
                   results:
                     type: array
@@ -71,7 +71,7 @@ paths:
           $ref: '#/components/responses/ValidationError'
       tags:
         - Пользователи
-  /api/tags/:
+  /api/v1/tags/:
     get:
       operationId: Cписок тегов
       description: ''
@@ -87,7 +87,7 @@ paths:
           description: ''
       tags:
         - Теги
-  /api/tags/{id}/:
+  /api/v1/tags/{id}/:
     get:
       operationId: Получение тега
       description: ''
@@ -109,7 +109,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Теги
-  /api/recipes/:
+  /api/v1/recipes/:
     get:
       operationId: Список рецептов
       description: Страница доступна всем пользователям. Доступна фильтрация по избранному, автору, списку покупок и тегам.
@@ -171,13 +171,13 @@ paths:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://foodgram.example.org/api/recipes/?page=4
+                    example: http://foodgram.example.org/api/v1/recipes/?page=4
                     description: 'Ссылка на следующую страницу'
                   previous:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://foodgram.example.org/api/recipes/?page=2
+                    example: http://foodgram.example.org/api/v1/recipes/?page=2
                     description: 'Ссылка на предыдущую страницу'
                   results:
                     type: array
@@ -217,7 +217,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Рецепты
-  /api/recipes/download_shopping_cart/:
+  /api/v1/recipes/download_shopping_cart/:
     get:
       security:
         - Token: [ ]
@@ -240,7 +240,7 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
       tags:
         - Список покупок
-  /api/recipes/{id}/:
+  /api/v1/recipes/{id}/:
     get:
       operationId: Получение рецепта
       description: ''
@@ -318,7 +318,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Рецепты
-  /api/recipes/{id}/favorite/:
+  /api/v1/recipes/{id}/favorite/:
     post:
       operationId: Добавить рецепт в избранное
       description: 'Доступно только авторизованному пользователю.'
@@ -374,7 +374,7 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
       tags:
         - Избранное
-  /api/recipes/{id}/shopping_cart/:
+  /api/v1/recipes/{id}/shopping_cart/:
     post:
       operationId: Добавить рецепт в список покупок
       description: 'Доступно только авторизованным пользователям'
@@ -429,7 +429,7 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
       tags:
         - Список покупок
-  /api/users/{id}/:
+  /api/v1/users/{id}/:
     get:
       operationId: Профиль пользователя
       description: 'Доступно всем пользователям.'
@@ -455,7 +455,7 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
       tags:
         - Пользователи
-  /api/users/me/:
+  /api/v1/users/me/:
     get:
       operationId: Текущий пользователь
       description: ''
@@ -473,7 +473,7 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
       tags:
         - Пользователи
-  /api/users/subscriptions/:
+  /api/v1/users/subscriptions/:
     get:
       operationId: Мои подписки
       description: 'Возвращает пользователей, на которых подписан текущий пользователь. В выдачу добавляются рецепты.'
@@ -511,13 +511,13 @@ paths:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://foodgram.example.org/api/users/subscriptions/?page=4
+                    example: http://foodgram.example.org/api/v1/users/subscriptions/?page=4
                     description: 'Ссылка на следующую страницу'
                   previous:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://foodgram.example.org/api/users/subscriptions/?page=2
+                    example: http://foodgram.example.org/api/v1/users/subscriptions/?page=2
                     description: 'Ссылка на предыдущую страницу'
                   results:
                     type: array
@@ -529,7 +529,7 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
       tags:
         - Подписки
-  /api/users/{id}/subscribe/:
+  /api/v1/users/{id}/subscribe/:
     post:
       operationId: Подписаться на пользователя
       description: 'Доступно только авторизованным пользователям'
@@ -595,7 +595,7 @@ paths:
 
       tags:
         - Подписки
-  /api/ingredients/:
+  /api/v1/ingredients/:
     get:
       operationId: Список ингредиентов
       description: 'Список ингредиентов с возможностью поиска по имени.'
@@ -617,7 +617,7 @@ paths:
           description: ''
       tags:
         - Ингредиенты
-  /api/ingredients/{id}/:
+  /api/v1/ingredients/{id}/:
     get:
       operationId: Получение ингредиента
       description: 'Уникальный идентификатор этого ингредиента.'
@@ -637,7 +637,7 @@ paths:
           description: ''
       tags:
         - Ингредиенты
-  /api/users/set_password/:
+  /api/v1/users/set_password/:
     post:
       operationId: Изменение пароля
       description: 'Изменение пароля текущего пользователя'
@@ -656,7 +656,7 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
       tags:
         - Пользователи
-  /api/auth/token/login/:
+  /api/v1/auth/token/login/:
     post:
       operationId: Получить токен авторизации
       description: Используется для авторизации по емейлу и паролю, чтобы далее использовать токен при запросах.
@@ -675,7 +675,7 @@ paths:
           description: ''
       tags:
         - Пользователи
-  /api/auth/token/logout/:
+  /api/v1/auth/token/logout/:
     post:
       operationId: Удаление токена
       description: Удаляет токен текущего пользователя
